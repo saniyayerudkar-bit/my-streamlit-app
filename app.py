@@ -1,10 +1,12 @@
 import streamlit as st
 from datetime import datetime
 from zoneinfo import ZoneInfo
+import random
+import time
 
 # Page Configuration
 st.set_page_config(
-    page_title="My Welcome App",
+    page_title="Welcome Dashboard",
     page_icon="🌸",
     layout="centered"
 )
@@ -12,107 +14,44 @@ st.set_page_config(
 # Indian Time
 india_time = datetime.now(ZoneInfo("Asia/Kolkata"))
 
+# Motivational Quotes
+quotes = [
+    "Believe in yourself and make it happen! ✨",
+    "Every day is a new opportunity. 🌷",
+    "Dream big and work hard. 💜",
+    "Small steps lead to big achievements. 🌈",
+    "Your only limit is your mind. 🌟"
+]
+
+# Theme Selection
+st.sidebar.title("🎨 Customize Your App")
+
+theme = st.sidebar.selectbox(
+    "Choose Your Theme",
+    ["Lavender", "Pink", "Blue", "Mint Green"]
+)
+
+themes = {
+    "Lavender": ["#f5f0ff", "#e8daef", "#6c3483"],
+    "Pink": ["#fff0f5", "#fce4ec", "#ad1457"],
+    "Blue": ["#eaf4ff", "#d6eaff", "#1565c0"],
+    "Mint Green": ["#eafff5", "#d5f5e3", "#117864"]
+}
+
+background, card, text_color = themes[theme]
+
 # Custom CSS
-st.markdown("""
+st.markdown(f"""
 <style>
-.stApp {
-    background-color: #f5f0ff;
-}
 
-h1 {
-    color: #6c3483;
+.stApp {{
+    background: {background};
+}}
+
+h1 {{
+    color: {text_color};
     text-align: center;
-}
+    font-size: 40px;
+}}
 
-.welcome {
-    background-color: #e8daef;
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 24px;
-    color: #512e5f;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-# Sidebar
-st.sidebar.title("🌸 About App")
-st.sidebar.write("Welcome to My Streamlit Application!")
-st.sidebar.info(
-    "This application generates personalized greetings."
-)
-
-# Main Heading
-st.title("🌸 Welcome App")
-
-st.write("### Enter your name to get a personalized greeting!")
-
-# Name Input
-name = st.text_input(
-    "Enter Your Name 👇",
-    placeholder="Your name here"
-)
-
-# Buttons
-col1, col2 = st.columns(2)
-
-with col1:
-    submit = st.button("Submit 🎉", use_container_width=True)
-
-with col2:
-    clear = st.button("Clear ❌", use_container_width=True)
-
-# Clear Button
-if clear:
-    st.rerun()
-
-# Greeting Logic
-if submit:
-
-    if name.strip():
-
-        hour = india_time.hour
-
-        if hour < 12:
-            greeting = "Good Morning"
-        elif hour < 17:
-            greeting = "Good Afternoon"
-        else:
-            greeting = "Good Evening"
-
-        # Celebration
-        st.balloons()
-
-        # Welcome Message
-        st.markdown(
-            f"""
-            <div class="welcome">
-                ✨ {greeting}, {name}! ✨
-                <br>
-                Welcome to My App!
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.success("Your greeting was generated successfully!")
-
-        # Date and Time (IST)
-        st.write(
-            "📅 Date:",
-            india_time.strftime("%d-%m-%Y")
-        )
-
-        st.write(
-            "⏰ Time:",
-            india_time.strftime("%I:%M:%S %p")
-        )
-
-    else:
-        st.warning("Please enter your name first!")
-
-# Footer
-st.markdown("---")
-
-st.caption("Made with ❤️ using Python and Streamlit")
+.subtitle {{
