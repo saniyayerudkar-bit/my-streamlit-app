@@ -1,3 +1,4 @@
+
 import streamlit as st
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -49,7 +50,7 @@ themes = {
 
 background, card, text_color = themes[theme]
 
-# Custom CSS (No f-string)
+# Custom CSS
 css = """
 <style>
 .stApp {
@@ -126,7 +127,56 @@ india_time = datetime.now(ZoneInfo("Asia/Kolkata"))
 col1, col2 = st.columns(2)
 
 with col1:
-    st.metric("📅 Today's Date", india_time.strftime("%d-%m-%Y"))
+    st.metric(
+        "📅 Today's Date",
+        india_time.strftime("%d-%m-%Y")
+    )
 
 with col2:
-    st.metric("🕒
+    st.metric(
+        "🕒 Current Time",
+        india_time.strftime("%I:%M:%S %p")
+    )
+
+st.markdown("---")
+
+# Visit Counter
+st.session_state.visits += 1
+
+# Name Input
+st.subheader("💜 Tell Us About Yourself")
+
+name = st.text_input(
+    "Enter your name:",
+    value=st.session_state.name
+)
+
+if st.button("Generate Welcome"):
+    if name.strip():
+        st.session_state.name = name.strip()
+        st.session_state.greeted = True
+        st.session_state.quote = random.choice(quotes)
+    else:
+        st.warning("Please enter your name.")
+
+# Personalized Greeting
+if st.session_state.greeted:
+    st.markdown(
+        f'<div class="welcome">Welcome, {st.session_state.name}! 🌸</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f'<div class="quote">{st.session_state.quote}</div>',
+        unsafe_allow_html=True
+    )
+
+st.markdown("---")
+
+# Visit Counter Display
+st.info(
+    f"👀 App visits in this session: {st.session_state.visits}"
+)
+
+# Footer
+st.caption("Made with Python and Streamlit 💜")
