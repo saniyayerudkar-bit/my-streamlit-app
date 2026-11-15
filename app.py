@@ -2,7 +2,6 @@ import streamlit as st
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import random
-import time
 
 # Page Configuration
 st.set_page_config(
@@ -10,6 +9,16 @@ st.set_page_config(
     page_icon="🌸",
     layout="centered"
 )
+
+# Initialize Session State
+if "visits" not in st.session_state:
+    st.session_state.visits = 0
+
+if "greeted" not in st.session_state:
+    st.session_state.greeted = False
+
+if "name" not in st.session_state:
+    st.session_state.name = ""
 
 # Indian Time
 india_time = datetime.now(ZoneInfo("Asia/Kolkata"))
@@ -43,9 +52,8 @@ background, card, text_color = themes[theme]
 # Custom CSS
 st.markdown(f"""
 <style>
-
 .stApp {{
-    background: {background};
+    background-color: {background};
 }}
 
 h1 {{
@@ -55,3 +63,11 @@ h1 {{
 }}
 
 .subtitle {{
+    text-align: center;
+    font-size: 18px;
+    color: {text_color};
+}}
+
+.welcome {{
+    background-color: {card};
+    padding: 30
